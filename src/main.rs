@@ -55,9 +55,7 @@ async fn display() {
             "Memory",
             &format!(
                 "{} MiB / {} MiB",
-                (info.0.total_visible_memory_size
-                    - info.0.free_physical_memory)
-                    / 1024,
+                (info.0.total_visible_memory_size - info.0.free_physical_memory) / 1024,
                 info.0.total_visible_memory_size / 1024
             ),
         ),
@@ -66,21 +64,20 @@ async fn display() {
             &info
                 .3
                 .into_iter()
-                .map(|x| {
-                    format!("({}) {} GiB", x.device_id, x.size / 1073741824)
-                })
+                .map(|x| format!("({}) {} GiB", x.device_id, x.size / 1073741824))
                 .collect::<Vec<String>>()
                 .join(" | "),
         ),
     ];
+    let random_ascii = ascii::ASCIIS[rand::random::<usize>() % ascii::ASCIIS.len()];
     let term = term_size::dimensions().unwrap().1 > 37;
+
     let ascii_len = if term {
-        ascii::REM_ASCII.len()
+        random_ascii.big.len()
     } else {
-        ascii::REM_ASCII_MINI.len()
+        random_ascii.small.len()
     };
-    let start = (ascii_len - arr.len()) / 2
-        - if term { cmp::max(arr.len(), 9) - 9 } else { 0 };
+    let start = (ascii_len - arr.len()) / 2 - if term { cmp::max(arr.len(), 9) - 9 } else { 0 };
     let max_key_len = arr.iter().map(|v| v.0.len()).max().unwrap_or(0);
     let max_length = arr
         .iter()
@@ -92,9 +89,9 @@ async fn display() {
 
     for i in 0..ascii_len {
         let line = if term {
-            ascii::REM_ASCII[i]
+            random_ascii.big[i]
         } else {
-            ascii::REM_ASCII_MINI[i]
+            random_ascii.small[i]
         };
         if i >= start && i < start + arr.len() {
             let value = arr.get(i - start).unwrap();

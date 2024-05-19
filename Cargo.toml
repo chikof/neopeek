@@ -12,9 +12,15 @@ serde = "1.0.195"
 term_size = "0.3.2"
 chrono = "0.4.32"
 winreg = "0.52.0"
+rand = "0.8.5"
+once_cell = "1.19.0"
 
 [profile.release]
 opt-level = 3
 codegen-units = 1
 lto = "fat"
 strip = "symbols"
+
+[features]
+default = ["cat"]
+cat = []
